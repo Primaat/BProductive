@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headerFiles">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>B*Productive App</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+	<!-- DataTables CCS & JS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>  
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" th:href="@{/vendor/font-awesome/css/font-awesome.min.css}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" th:href="@{/css/fontastic.css}">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" th:href="@{/css/style.default.css}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}">
+    <script type="text/javascript">
+        function refreshPage () {
+            var page_y = document.getElementsByTagName("body")[0].scrollTop;
+            window.location.href = window.location.href.split('?')[0] + '?page_y=' + page_y;
+        }
+        window.onload = function () {
+            //setTimeout(refreshPage, 35000);
+            if ( window.location.href.indexOf('page_y') != -1 ) {
+                var match = window.location.href.split('?')[1].split("&")[0].split("=");
+                document.getElementsByTagName("body")[0].scrollTop = match[1];
+            }
+        }
+    </script>
+  </head>
+<body style= background-color:#b1b0b5>
+	  <div class="container">
+  		<div id="elementtopmargin" class="statistic align-items-center bg-orange has-shadow">
+	  		<h1 style = font-size:50px>B*Productive</h1>
+		</div>	  		
+	  </div>
+	<section id="elementtopmargin" class="dashboard-header">
+	  <div class="container">
+	  	<div class="statistic align-items-center bg-white has-shadow">
+	  	  <div class="tableheader statistic d-flex align-items-left bg-orange has-shadow">
+  	 		<div class="container-fluid"> 
+         	  <div class="row row-cols-12">
+          	    <div class="col-4">
+          		 <h1 style = font-size:35px>Task List</h1>
+			    </div>
+			    <div class="col-5">
+			    </div>
+ 				<div class="col-3 addbutton-wide">
+				 <a th:href="@{/create}" class="btn btn-success">&nbsp;Create Task</a>
+				</div>		 			 
+         	  </div>
+          </div>
+ 		  </div>
+		  <table id="table_id" class="display table-striped">
+		   <tbody>
+		    <tr th:each="toDo : ${toDos}"> 
+			 	<th scope = "row" th:text="${toDo.id}">123</th>
+			 	<td th:text="${toDo.creator}">Creator</td>
+			 	<td th:text="${toDo.toDo}">Task</td>	
+			 	<td th:text="${toDo.status}">Status</td>							 	
+			 	<td th:text="${toDo.priority}">Priority</td>
+			 	<td th:text="${#temporals.format(toDo.creationDate, 'dd-MM-yyyy')}">Creation</td> 
+			 	<td th:text="${#temporals.format(toDo.endDate, 'dd-MM-yyyy')}">End</td> 	
+			 	<td>
+				 	<ul>
+			 			<li><span><a th:href="@{/get/{id}(id=${toDo.id})}">View</a></span></li>				 	
+				 		<li><span><a th:href="@{/update/{id}(id=${toDo.id})}">Update</a></span></li>
+			 			<li><span><a th:href="@{/delete/{id}(id=${toDo.id})}" 
+					        th:data-confirm-delete="|Are you sure you want to delete Task no.: ${toDo.id}?|"
+					  		onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">Delete</a></span></li>				 		
+			 		</ul>
+		  		</td>	
+			</tr>
+	      </tbody>
+		</table>
+		<script type="text/javascript">$(document).ready(function() {
+    	  $('#table_id').DataTable({
+    		    "columns": [{
+    		        "title": "#"
+    		      },
+    		      {
+    		        "title": "Creator"
+    		      },
+    		      {
+    		        "title": "Task"
+    		      },
+    		      {
+    		        "title": "Status"
+    		      },
+    		      {
+    		        "title": "Priority"
+    		      },
+    		      {
+    		        "title": "Created"
+    		      },
+    		      {
+    		        "title": "Ends On"
+    		      },
+    		      {
+					"title": ""
+       		      }
+    		    ]
+    		  });		    		  	
+    		});
+   		</script>
+	   </div>
+	  </div>
+	</section>
+    <!-- JavaScript files-->   	
+    <script src="vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="js/charts-home.js"></script>
+    <!-- Main File-->
+    <script src="js/front.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    
+</body>
+</html>
